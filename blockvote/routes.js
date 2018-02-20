@@ -5,7 +5,7 @@ module.exports = function(app){
     vote.check_votes(req, res);
   });
 
-  app.get('/cast_vote', function(req, res) {
+  app.get('/cast_vote/:vote', function(req, res) {
     vote.cast_vote(req, res);
   });
 }

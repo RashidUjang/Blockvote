@@ -100,14 +100,31 @@ func (t *VotingChain) checkVotes(APIstub shim.ChaincodeStubInterface) peer.Respo
 }
 
 func (s *VotingChain) castVote(APIstub shim.ChaincodeStubInterface, args []string) peer.Response {
-  fmt.Println("Cast Vote")
+  // Checking for correct argument length
+  if len(args) != 3 {
+    return shim.Error("Incorrect number of arguments. Expecting 3")
+  }
 
+  // Constructing Vote object from arguments
+  var vote = Vote{CandidateID: args[1], PartyID: args[2]}
+
+  // Converting JSON to chain-readable bytes and appending it to the blockchain
+  voteBytes, _ := json.Marshal(vote)
+	err := APIstub.PutState(args[0], voteBytes)
+
+  // Check for errors
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Failed to record vote: %s", args[0]))
+	}
+
+  // Return success message
 	return shim.Success(nil)
 }
 
-// main function starts up the chaincode in the container during instantiate
+// Starts the chaincode during Instantiate call
 func main() {
     err := shim.Start(new(VotingChain))
+
     if err != nil {
         fmt.Println("Could not start VotingChain")
     } else {
