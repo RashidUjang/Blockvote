@@ -2,8 +2,10 @@
 
 var app = angular.module('votingApp', []);
 
-// Angular Controller
 app.controller('appController', function($scope, appFactory) {
+
+	$("#success_create").hide();
+
 	$scope.checkVotes = function() {
 		appFactory.checkVotes(function(data) {
 			var array = [];
@@ -19,13 +21,30 @@ app.controller('appController', function($scope, appFactory) {
 			    return parseFloat(a.Key) - parseFloat(b.Key);
 			});
 
-			$scope.all_tuna = array;
+			$scope.votes = array;
 		});
 	}
 
+	$scope.vote = {
+									CandidateID: "Null",
+									PartyID: "Null"
+								};
+
+	$scope.candidates = [{
+												CandidateID: "1",
+												PartyID: "1"
+											},
+
+											{
+												CandidateID: "2",
+												PartyID: "2"
+											}];
+
 	$scope.castVote = function() {
-		$("#poll").hide();
-		console.log("Vote has been casted");
+		appFactory.castVote(function() {
+			$("#poll").hide();
+			$("#success_create").show();
+		});
 	}
 });
 
@@ -40,8 +59,8 @@ app.factory('appFactory', function($http) {
 		});
 	}
 
-	factory.castVote = function(callback) {
-		$http.get('/cast_vote').success(function(output) {
+	factory.castVote = function(data, callback) {
+		$http.get('/cast_vote/').success(function(output){
 			callback(output)
 		});
 	}

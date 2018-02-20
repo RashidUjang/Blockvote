@@ -81,25 +81,26 @@
           <th>Party</th>
         </tr>
 
-        <tr ng-repeat="tuna in all_tuna">
-          <td>{{tuna.Key}}</td>
-          <td>{{tuna.CandidateID}}</td>
-          <td>{{tuna.PartyID}}</td>
+        <tr ng-repeat="avote in votes">
+          <td>{{avote.Key}}</td>
+          <td>{{avote.CandidateID}}</td>
+          <td>{{avote.PartyID}}</td>
         </tr>
       </table>
 
-      <div id="poll" class="form-group">
-        <label>Polling Station</label>
-        <br>
-        <INPUT TYPE="button" NAME="answer" value="Candidate 1" class="btn btn-primary" ng-click=castVote()><BR>
-        <INPUT TYPE="button" NAME="answer" value="Candidate 2" class="btn btn-primary" ng-click=castVote()><BR>
-        <INPUT TYPE="button" NAME="answer" value="Candidate 3" class="btn btn-primary" ng-click=castVote()><BR>
-        <INPUT TYPE="button" NAME="answer" value="Candidate 4" class="btn btn-primary" ng-click=castVote()><P>
-        <br>
-      </div>
-      
+      <h5 style="color:green;margin-bottom:2%" id="success_create">Successfully voted. Transaction ID: {{success_vote}}</h5>
+
+      <form id="poll" class="form-group">
+        <label>Parliamentary Elections</label>
+          <div ng-repeat="candidate in candidates">
+            <input type="radio" name="votingGroup" ng-model="$parent.vote" ng-value="candidate">
+            <label>{{"Name: " + candidate.CandidateID + " Party: " + candidate.PartyID}}</label>
+          </div>
+        <label>You are voting for {{vote.CandidateID}} from party {{vote.PartyID}}</label>
+        <input type="submit" class="btn btn-primary" ng-click="castVote()">
+      </form>
+
     </div>
   </body>
-    <!-- requiring the angular page -->
     <script type="text/javascript" src="app.js"> </script>
 </html>

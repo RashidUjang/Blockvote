@@ -11,9 +11,10 @@ var os            = require('os');
 module.exports = (function() {
 return{
 	check_votes: function(req, res) {
+		// Initialize Fabric Client
 		var fabric_client = new Fabric_Client();
 
-		// setup the fabric network
+		// Initialize channel and peer
 		var channel = fabric_client.newChannel('mychannel');
 		var peer = fabric_client.newPeer('grpc://localhost:7051');
 		channel.addPeer(peer);
@@ -71,6 +72,10 @@ return{
 		}).catch((err) => {
 		    console.error('Failed to query successfully :: ' + err);
 		});
+	},
+
+	cast_vote: function(req, res) {
+
 	},
 }
 })();
