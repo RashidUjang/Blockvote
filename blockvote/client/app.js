@@ -9,19 +9,26 @@ app.controller('appController', function($scope, appFactory) {
 	$scope.checkVotes = function() {
 		appFactory.checkVotes(function(data) {
 			var array = [];
+			var candidate1 = 0;
 
 			for(var i = 0; i < data.length; i++) {
-				parseInt(data[i].Key);
-
-				data[i].Record.Key = parseInt(data[i].Key);
+				data[i].Record.Key = data[i].Key;
 				array.push(data[i].Record);
+
+				if (parseInt(data[i].Record.CandidateID) == 1) {
+
+					candidate1++;
+				}
 			}
+
+			$scope.candidate1Percentage = candidate1/data.length * 100;
 
 			array.sort(function(a, b) {
 			    return parseFloat(a.Key) - parseFloat(b.Key);
 			});
 
 			$scope.votes = array;
+
 		});
 	}
 

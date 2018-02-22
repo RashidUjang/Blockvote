@@ -70,14 +70,14 @@
     <div id="body">
       <div class="form-group">
         <label>Check Votes</label>
-        <p><input id="queryAllTuna" type="submit" value="Query" class="btn btn-primary" ng-click="checkVotes()"></p>
+        <p><input type="submit" value="Query" class="btn btn-primary" ng-click="checkVotes()"></p>
       </div>
 
-      <table id="all_tuna" class="table" align="center">
+      <table class="table">
 
         <tr>
+          <th>Voter Public Key</th>
           <th>Candidate</th>
-          <th>Votes</th>
           <th>Party</th>
         </tr>
 
@@ -87,6 +87,19 @@
           <td>{{avote.PartyID}}</td>
         </tr>
       </table>
+
+      <table class="table">
+        <tr>
+          <th>Candidate 1</th>
+          <th>Candidate 2</th>
+        </tr>
+        <tr>
+          <td>{{candidate1Percentage + "%"}}</td>
+          <td>{{(100 - candidate1Percentage) + "%"}}</td>
+        </tr>
+      </table>
+
+
 
       <h5 style="color:green;margin-bottom:2%" id="success_create">Successfully voted. Transaction ID: {{success_vote}}</h5>
 

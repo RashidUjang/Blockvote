@@ -25,6 +25,7 @@ func (t *VotingChain) Init(APIstub shim.ChaincodeStubInterface) peer.Response {
 func (t *VotingChain) Invoke(APIstub shim.ChaincodeStubInterface) peer.Response {
   	function, args := APIstub.GetFunctionAndParameters()
 
+    // Calls the appropriate functions
   	if function == "checkVotes" {
   		return t.checkVotes(APIstub)
   	} else if function == "initLedger" {
@@ -33,20 +34,21 @@ func (t *VotingChain) Invoke(APIstub shim.ChaincodeStubInterface) peer.Response 
   		return t.castVote(APIstub, args)
   	}
 
+
   	return shim.Error("Function called does not exist.")
 }
 
 func (s *VotingChain) initLedger(APIstub shim.ChaincodeStubInterface) peer.Response {
 		 fmt.Println("Initialized Ledger")
      votes := []Vote{
-   		Vote{CandidateID: "Candidate 1", PartyID: "Party 1"},
-   		Vote{CandidateID: "Candidate 2", PartyID: "Party 2"},
+   		Vote{CandidateID: "1", PartyID: "1"},
+   		Vote{CandidateID: "2", PartyID: "2"},
    	}
 
    	i := 0
    	for i < len(votes) {
-   		tunaAsBytes, _ := json.Marshal(votes[i])
-   		APIstub.PutState(strconv.Itoa(i+1), tunaAsBytes)
+   		voteBytes, _ := json.Marshal(votes[i])
+   		APIstub.PutState("02194" + strconv.Itoa(i+1), voteBytes)
    		i = i + 1
    	}
 	   return shim.Success(nil)
@@ -92,6 +94,7 @@ func (t *VotingChain) checkVotes(APIstub shim.ChaincodeStubInterface) peer.Respo
 		buffer.WriteString("}")
 		bArrayMemberAlreadyWritten = true
 	}
+
 	buffer.WriteString("]")
 
 	fmt.Printf("- checkVotes:\n%s\n", buffer.String())
@@ -110,7 +113,7 @@ func (s *VotingChain) castVote(APIstub shim.ChaincodeStubInterface, args []strin
 
   // Converting JSON to chain-readable bytes and appending it to the blockchain
   voteBytes, _ := json.Marshal(vote)
-	err := APIstub.PutState(args[0], voteBytes)
+	err := APIstub.PutState("324534", voteBytes)
 
   // Check for errors
 	if err != nil {

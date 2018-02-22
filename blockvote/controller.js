@@ -17,6 +17,8 @@ return{
 		// Initialize channel and peer
 		var channel = fabric_client.newChannel('mychannel');
 		var peer = fabric_client.newPeer('grpc://localhost:7051');
+
+		// Add peer to channel
 		channel.addPeer(peer);
 
 		var member_user = null;
@@ -114,6 +116,8 @@ return{
 		    return fabric_client.getUserContext('user1', true);
 		}).then((user_from_store) => {
 		    if (user_from_store && user_from_store.isEnrolled()) {
+
+						console.log(user_from_store.getSigningIdentity());
 		        console.log('Successfully loaded user1 from persistence');
 		        member_user = user_from_store;
 		    } else {
@@ -140,6 +144,7 @@ return{
 		}).then((results) => {
 		    var proposalResponses = results[0];
 		    var proposal = results[1];
+
 		    let isProposalGood = false;
 		    if (proposalResponses && proposalResponses[0].response &&
 		        proposalResponses[0].response.status === 200) {
